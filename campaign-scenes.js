@@ -4,6 +4,20 @@ window.addEventListener('DOMContentLoaded', () => {
     const setup = root?.querySelector('#campaignSetup');
     if (!root || !setup || setup.querySelector('#sceneLibrary')) return;
 
+    const style = document.createElement('style');
+    style.textContent = `
+      #campaignSetup .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
+      #sceneLibrary { grid-column: 1 / -1; min-height: 0; display: grid; grid-template-columns: minmax(180px, .85fr) minmax(380px, 2fr) minmax(200px, .85fr); gap: 20px; align-items: center; background: linear-gradient(105deg, #162a45, #1d3048 52%, #18253c); }
+      #sceneLibrary .scene-copy h2 { margin: 6px 0 8px; }
+      #sceneLibrary .scene-copy p { margin: 0; }
+      #sceneLibrary #sceneChoices { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 8px !important; }
+      #sceneLibrary #sceneChoices .event { min-height: 48px; padding: 8px; font-size: 13px; text-align: center; }
+      #sceneLibrary label { padding-left: 18px; border-left: 1px solid #42607e; color: #c6d6e6; font-size: 13px; }
+      @media (max-width: 900px) { #campaignSetup .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } #sceneLibrary { grid-template-columns: 1fr; } #sceneLibrary label { padding-left: 0; border-left: 0; } }
+      @media (max-width: 620px) { #campaignSetup .cards { grid-template-columns: 1fr; } #sceneLibrary #sceneChoices { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
+    `;
+    document.head.append(style);
+
     const scenes = {
       city: { name: '城镇与阴谋', intro: '在拥挤街巷、酒馆和权力关系中调查、交涉或抉择。', places: ['城门', '潮汐酒馆', '市场', '工坊街', '贫民巷', '议事厅', '旧下水道', '钟楼'], icon: '🏙' },
       wild: { name: '荒野旅行', intro: '穿越道路、森林、山地或冰原，管理补给、天气、迷路与营地。', places: ['出发驿站', '林间小径', '猎人小屋', '山口', '河谷渡口', '废弃哨塔', '临时营地', '远方地标'], icon: '🌲' },
@@ -23,7 +37,7 @@ window.addEventListener('DOMContentLoaded', () => {
     library.className = 'card';
     library.id = 'sceneLibrary';
     library.style.minHeight = 'auto';
-    library.innerHTML = `<span class="tag">场景库</span><h2>这局从哪里开始？</h2><p>选择一种场景结构，再由玩家决定具体目标和行动。</p><div id="sceneChoices" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px"></div><label style="display:block;margin-top:12px">自定义冒险名称<br><input id="customAdventure" placeholder="例如：失落矿井的救援" style="box-sizing:border-box;width:100%;margin-top:7px;padding:9px;background:#0a1626;color:#fff;border:1px solid #466987;border-radius:6px"></label>`;
+    library.innerHTML = `<div class="scene-copy"><span class="tag">场景库</span><h2>这局从哪里开始？</h2><p>选择一种场景结构，再由玩家决定具体目标和行动。</p></div><div id="sceneChoices" style="display:grid"></div><label>自定义冒险名称<br><input id="customAdventure" placeholder="例如：失落矿井的救援" style="box-sizing:border-box;width:100%;margin-top:7px;padding:9px;background:#0a1626;color:#fff;border:1px solid #466987;border-radius:6px"></label>`;
     setup.querySelector('.cards').append(library);
     const choices = library.querySelector('#sceneChoices');
 
